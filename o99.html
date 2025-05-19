@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>UID & SMS পাঠান</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      text-align: center;
+      background: radial-gradient(#e0e0e0 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    input, textarea, button {
+      display: block;
+      margin: 10px auto;
+      padding: 12px;
+      width: 90%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #00a884;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+
+    h2, h3 {
+      margin-bottom: 20px;
+    }
+
+    #popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #popupContent {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .title-banner {
+      color: red;
+      font-size: 32px;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: 3px solid red;
+      display: inline-block;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="title-banner">DARK HACK</div>
+
+  <h2>আসসালামুয়ালিকুম! এটি আমাদের পেমেন্ট নাম্বার: 01876685711<br><br>
+    আপনি পেমেন্ট করার পর নিচে আপনার UID ও ট্রানজেকশন ID দিন। আমরা চেক করে সাথে সাথে একটিভ করে দিব ইনশাআল্লাহ।
+  </h2>
+
+  <label>ছবি নির্বাচন করুন:</label>
+  <input type="file" id="imageInput" accept="image/*">
+
+  <button onclick="showPopup()">পাঠান</button>
+
+  <div id="popup">
+    <div id="popupContent">
+      <h3>আপনার UID এবং ট্রানজেকশন ID দিন</h3>
+      <label>UID:</label>
+      <input type="text" id="uidInput" placeholder="UID লিখুন">
+
+      <label>SMS:</label>
+      <input type="text" id="smsInput" placeholder="SMS লিখুন">
+
+      <button onclick="submitData()">সাবমিট করুন</button>
+    </div>
+  </div>
+
+  <script>
+    const botToken = '7822573900:AAFIUenaluXHTEZrm7XE03Q41Hcg5cnjCz4';
+    const chatId = '7930734250';
+
+    function showPopup() {
+      document.getElementById('popup').style.display = 'flex';
+    }
+
+    async function submitData() {
+      const uid = document.getElementById('uidInput').value.trim();
+      const sms = document.getElementById('smsInput').value.trim();
+      const imageFile = document.getElementById('imageInput').files[0];
+
+      if (!uid || !sms) {
+        alert("দয়া করে UID এবং SMS পূরণ করুন");
+        return;
+      }
+
+      const textMessage = `I am payment here this for my UID :- ${uid} SMS :- ${sms}`;
+
+      // Send text to Telegram
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: textMessage
+        })
+      });
+
+      // Send image if available
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('chat_id', chatId);
+        formData.append('photo', imageFile);
+
+        await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+          method: 'POST',
+          body: formData
+        });
+      }
+
+      // Hide popup
+      document.getElementById('popup').style.display = 'none';
+
+      // Delay 5 seconds then redirect
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

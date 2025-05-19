@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Device-Based Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #111;
+      color: #f00;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .success { color: #00ff00; font-weight: bold; }
+    .error { color: red; font-weight: bold; }
+
+    .logo-container img {
+      max-width: 50%;
+      height: auto;
+      margin-top: 10px;
+    }
+
+    /* Particle styles */
+    .particle {
+      position: absolute;
+      animation: floatParticle 3s linear infinite;
+      opacity: 0.8;
+      z-index: 0;
+    }
+
+    .square {
+      width: 8px;
+      height: 8px;
+      background-color: red;
+    }
+
+    .star {
+      width: 10px;
+      height: 10px;
+      background-color: white;
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+
+    .goldbox {
+      width: 10px;
+      height: 10px;
+      background-color: gold;
+    }
+
+    .roundbox {
+      width: 10px;
+      height: 10px;
+      background-color: green;
+      border-radius: 50%;
+    }
+
+    @keyframes floatParticle {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(-50px + 100vw), calc(-50px + 100vh)) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .button-container {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 25px;
+      font-size: 18px;
+      background-color: #0088cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .payment-btn {
+      background-color: #00cc88;
+    }
+
+    #device-id {
+      margin-top: 15px;
+      color: #0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo-container">
+    <img src="logo-url-here.png" alt="Logo" />
+  </div>
+
+  <h2>dark hack</h2>
+  <div id="login-message"></div>
+  <div id="device-id-message"></div>
+
+  <div class="button-container">
+    <button class="payment-btn" onclick="openPaymentPage()">Payment</button>
+  </div>
+
+  <script>
+    const approvalURL = 'https://raw.githubusercontent.com/Nyeem122-8/e-password-premium-/main/Aprooval.txt';
+    const deviceIdKey = 'device-id';
+
+    function generateDeviceId() {
+      const ua = navigator.userAgent;
+      const lang = navigator.language;
+      const res = `${ua}-${screen.width}x${screen.height}-${lang}`;
+      let hash = 0;
+      for (let i = 0; i < res.length; i++) {
+        hash = ((hash << 5) - hash) + res.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash).toString(16);
+    }
+
+    function checkDeviceId() {
+      let deviceId = localStorage.getItem(deviceIdKey);
+      if (!deviceId) {
+        deviceId = generateDeviceId();
+        localStorage.setItem(deviceIdKey, deviceId);
+      }
+      document.getElementById("device-id-message").innerHTML = `<div id="device-id">Your Device ID: <b>${deviceId}</b></div>`;
+      return deviceId;
+    }
+
+    function autoLoginOnlyWithDevice() {
+      const deviceId = checkDeviceId();
+      fetch(approvalURL)
+        .then(res => res.ok ? res.text() : Promise.reject("GitHub fetch failed"))
+        .then(data => {
+          const allowedDevices = data.split('\n').map(line => line.trim());
+          if (allowedDevices.includes(deviceId)) {
+            document.getElementById("login-message").innerText = "Device verified! Logging in...";
+            document.getElementById("login-message").className = "success";
+            setTimeout(() => window.location.href = "zmmzmxmxkxkjxjxjdnnsndjxjxjjxjxjdhhfhdhdgfggfhdhhshsjejdhbtbfbfhht74urhthry3ubehrh7euebydhdbduenhudnnsiiwjezmmzmxmxkxkjxjxjdnnsndjxjxjjxjxjdhhfhdhdgfggfhdhhshsjejdhbtbfbfhht74urhthry3ubehrh7euebydhdbduenhudnnsiiwje.html", 1500);
+          } else {
+            document.getElementById("login-message").innerText = "sir your code if the no verify please payment and ki verify okay..";
+            document.getElementById("login-message").className = "error";
+          }
+        })
+        .catch(() => {
+          document.getElementById("login-message").innerText = "Failed to load data from GitHub.";
+          document.getElementById("login-message").className = "error";
+        });
+    }
+
+    function openPaymentPage() {
+      window.location.href = "o99.html";
+    }
+
+    // Create multiple particles each time
+    function createParticle() {
+      const types = ['square', 'star', 'goldbox', 'roundbox'];
+      for (let i = 0; i < 5; i++) {
+        const particleType = types[Math.floor(Math.random() * types.length)];
+        const particle = document.createElement('div');
+        particle.classList.add('particle', particleType);
+
+        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.top = Math.random() * 100 + 'vh';
+        particle.style.animationDuration = (Math.random() * 2 + 1) + 's';
+        document.body.appendChild(particle);
+
+        setTimeout(() => {
+          particle.remove();
+        }, 2000);
+      }
+    }
+
+    setInterval(createParticle, 50);
+
+    window.onload = () => {
+      autoLoginOnlyWithDevice();
+    };
+  </script>
+
+</body>
+</html>

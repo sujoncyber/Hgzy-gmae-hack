@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>রিডাইরেক্ট হচ্ছে...</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .loader {
+      border: 8px solid #333;
+      border-top: 8px solid #0f0;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    p {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #ccc;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .logo-container img {
+      max-width: 50%;
+      height: auto;
+      margin-top: 10px;
+    }
+
+    /* Particle styles */
+    .particle {
+      position: absolute;
+      animation: floatParticle 3s linear infinite;
+      opacity: 0.8;
+    }
+
+    /* Different particle types */
+    .square {
+      width: 8px;
+      height: 8px;
+      background-color: red;
+    }
+
+    .star {
+      width: 10px;
+      height: 10px;
+      background-color: white;
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+
+    .goldbox {
+      width: 10px;
+      height: 10px;
+      background-color: gold;
+    }
+
+    .roundbox {
+      width: 10px;
+      height: 10px;
+      background-color: green;
+      border-radius: 50%;
+    }
+
+    @keyframes floatParticle {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(-50px + 100vw), calc(-50px + 100vh)) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-container">
+    <img src="logo-url-here.png" alt="Logo" />
+  </div>
+  <div class="loader"></div>
+  <h1>wait please....</h1>
+  <p></p>
+
+  <script>
+    // Particle Generator
+    function createParticle() {
+      const particle = document.createElement('div');
+      const particleType = Math.floor(Math.random() * 4); // Random type: 0 - square, 1 - star, 2 - goldbox, 3 - roundbox
+      
+      // Assign the particle class based on the type
+      if (particleType === 0) {
+        particle.classList.add('particle', 'square');
+      } else if (particleType === 1) {
+        particle.classList.add('particle', 'star');
+      } else if (particleType === 2) {
+        particle.classList.add('particle', 'goldbox');
+      } else if (particleType === 3) {
+        particle.classList.add('particle', 'roundbox');
+      }
+      
+      // Set the position and animation
+      particle.style.left = Math.random() * 100 + 'vw';
+      particle.style.top = Math.random() * 100 + 'vh';
+      particle.style.animationDuration = (Math.random() * 2 + 2) + 's';  // Random speed
+      document.body.appendChild(particle);
+
+      // Remove particle after animation ends
+      setTimeout(() => {
+        particle.remove();
+      }, 4000);
+    }
+
+    // Generate particles every 50 milliseconds for more particles
+    setInterval(createParticle, 50);
+
+    // Redirect logic
+    const statusURL = 'https://raw.githubusercontent.com/Nyeem122-8/e-password-premium-/refs/heads/main/Pa.text';
+
+    fetch(statusURL)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('নেটওয়ার্ক রেসপন্স সঠিক নয়');
+        }
+        return response.text();
+      })
+      .then(text => {
+        const status = text.trim().toLowerCase();
+        let redirectURL = '';
+
+        if (status === 'on') {
+          redirectURL = 'zmmzmxmxkxkjxjxjdnnsndjxjxjjxjxjdhhfhdhdgfggfhdhhshsjejdhbtbfbfhht74urhthry3ubehrh7euebydhdbduenhudnnsiiwje.html';
+        } else if (status === 'off') {
+          redirectURL = 'jdjcjfjfjjfjfjjgjtjtjyjjy848u4uurhrjrj.html';
+        } else {
+          document.querySelector('h1').textContent = 'অবৈধ স্ট্যাটাস মান।';
+          document.querySelector('p').textContent = 'অনুগ্রহ করে Pa.text ফাইলটি পরীক্ষা করুন।';
+          return;
+        }
+
+        setTimeout(() => {
+          window.location.href = redirectURL;
+        }, 3000);
+      })
+      .catch(error => {
+        document.querySelector('h1').textContent = 'স্ট্যাটাস ফেচ করতে সমস্যা হয়েছে।';
+        document.querySelector('p').textContent = error.message;
+      });
+  </script>
+</body>
+</html>
